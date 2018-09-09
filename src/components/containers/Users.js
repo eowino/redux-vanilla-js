@@ -1,7 +1,7 @@
+// @ts-check
 import Users from '../views/Users';
 import { addUser } from '../../actions/users';
 
-// @ts-check
 export default class WithUsers {
   constructor(props = {}) {
     this.props = props;
