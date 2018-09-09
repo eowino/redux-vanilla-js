@@ -1,22 +1,15 @@
+import Users from '../views/Users';
+import { addUser } from '../../actions/users';
+
 // @ts-check
-const AddUserInput = () =>
-  `<input type="text" name="addUser" placeholder="Add a user">`;
-
-const UserList = (users = []) =>
-  `<ul class="user-list">
-        ${users.map(user => `<li>${user.name}</li>`).join('')}
-    </ul>`;
-
-const Users = users =>
-  `<div class="users">
-        <div>${AddUserInput()}</div>
-        <h1>Users</h1>
-        ${UserList(users)}      
-    </div>`;
-
 export default class WithUsers {
   constructor(props = {}) {
     this.props = props;
+    this.store = this.props.store;
+  }
+
+  getUsers() {
+    return this.store.getState().users;
   }
 
   handleAddUser(container) {
@@ -26,14 +19,15 @@ export default class WithUsers {
       const value = e.target.value;
 
       if (isEnterKey && value.length > 0) {
-        console.log('value', value);
+        this.store.dispatch(addUser(value));
+        e.target.value = '';
       }
     });
   }
-  
+
   render() {
     const container = document.createElement('div');
-    container.innerHTML = Users(this.props.users);
+    container.innerHTML = Users(this.getUsers());
     this.handleAddUser(container);
 
     return container;

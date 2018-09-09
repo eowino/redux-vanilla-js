@@ -2,20 +2,16 @@
 import { createStore } from 'redux';
 import allReducers from './src/reducers/index';
 
-import Users from './src/views/users';
+import Users from './src/components/containers/Users';
 
 const root = document.getElementById('root');
 const store = createStore(allReducers);
 
-console.log(store.getState());
-
-const test = {
-    users: [
-        { name: 'Bob' },
-        { name: 'Sue' },
-        { name: 'Dave' },
-        { name: 'Chris' },
-    ]
+function renderUsers() {
+  root.innerHTML = '';
+  root.appendChild(new Users({ store }).render());
 }
 
-root.appendChild(new Users(test).render());
+renderUsers();
+
+store.subscribe(() => renderUsers());
